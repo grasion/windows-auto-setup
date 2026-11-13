@@ -1,0 +1,35 @@
+# 태그(v1.2.3)를 푸시하면 AutoSetup.exe 를 빌드해서 GitHub 릴리스로 올립니다.
+# 프로그램의 자동 업데이트는 이 릴리스의 AutoSetup.exe 를 내려받습니다.
+#
+#   git tag v1.2.3
+#   git push origin v1.2.3
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build AutoSetup.exe
+        shell: powershell
+        run: |
+          $ver = '${{ github.ref_name }}'.TrimStart('v')
+          powershell -NoProfile -ExecutionPolicy Bypass -File src\build.ps1 -Version $ver -Out "$pwd\AutoSetup.exe"
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Create GitHub release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $hash = (Get-FileHash AutoSetup.exe -Algorithm SHA256).Hash.ToLower()
+          # 프로그램이 다운로드 파일을 검증할 수 있도록 SHA256 을 릴리스 설명에 넣는다
+          gh release create '${{ github.ref_name }}' AutoSetup.exe --title '${{ github.ref_name }}' --notes "SHA256: $hash" --generate-notes

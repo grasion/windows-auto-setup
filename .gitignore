@@ -1,0 +1,22 @@
+# ---- 개인 데이터: 절대 GitHub 에 올리지 않기 ----
+# 설치 파일과 시리얼 번호(.txt) - 라이선스/시리얼 유출 방지
+install_file/*
+!install_file/.gitkeep
+# 사용자 설정과 설치 로그
+settings.json
+logs/
+
+# ---- 빌드 결과물 (GitHub 릴리스로 배포) ----
+AutoSetup.exe
+*.exe.old
+*.exe.new
+
+# ---- 저장소에 올리지 않는 로컬 파일 ----
+# 블로그 원고
+blog/
+# 예전 배치 파일 방식
+auto_install.bat
+setup_auto_install.bat
+setup_startup_task.bat
+test_autorun.bat
+auto.zip

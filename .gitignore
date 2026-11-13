@@ -12,6 +12,8 @@ AutoSetup.exe
 *.exe.new
 
 # ---- 저장소에 올리지 않는 로컬 파일 ----
+# 블로그 원고
+blog/
 # 예전 배치 파일 방식
 auto_install.bat
 setup_auto_install.bat
